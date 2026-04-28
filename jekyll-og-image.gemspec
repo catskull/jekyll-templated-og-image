@@ -1,7 +1,7 @@
 Gem::Specification.new do |spec|
   spec.name          = "jekyll-og-image"
   spec.version       = "0.1.0"
-  spec.authors       = ["dwd"]
+  spec.authors       = ["catskull"]
   spec.summary       = "Generate Open Graph images for Jekyll pages and posts"
   spec.homepage      = "https://github.com/catskull/jekyll-og-image"
   spec.license       = "MIT"
