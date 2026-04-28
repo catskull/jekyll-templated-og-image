@@ -1,162 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1200, height=630">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html, body {
-    width: 1200px;
-    height: 630px;
-    overflow: hidden;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  }
+    body {
+      width: 1200px;
+      height: 630px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 64px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      overflow: hidden;
+    }
 
-  .og-image {
-    width: 1200px;
-    height: 630px;
-    color: #000;
-    position: absolute;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #e8e4e0;
-  }
+    .accent {
+      display: block;
+      width: 64px;
+      height: 6px;
+      background: #6366f1;
+      border-radius: 3px;
+      margin-bottom: 32px;
+    }
 
-  .texture {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
+    .title {
+      font-size: 64px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: #f8fafc;
+      max-width: 900px;
+      margin-bottom: 40px;
+    }
 
-  .card {
-    position: relative;
-    width: 88%;
-    height: 82%;
-    background: #fff;
-    border: 2px solid #000;
-    box-shadow: 12px 12px 0px rgba(0,0,0,0.4);
-  }
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
 
-  .card-content {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 32px;
-    padding-bottom: 110px;
-  }
+    .date {
+      font-size: 22px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
 
-  .date {
-    font-size: 28px;
-    margin-bottom: 16px;
-  }
+    .tags {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
 
-  .title {
-    font-weight: bold;
-    font-style: italic;
-    line-height: 0.95;
-    flex: 1;
-    overflow: hidden;
-    text-decoration: underline;
-    text-decoration-color: #ffff00;
-    text-underline-offset: 4px;
-    overflow-wrap: break-word;
-  }
+    .tag {
+      font-size: 18px;
+      font-weight: 600;
+      color: #818cf8;
+      background: rgba(99, 102, 241, 0.15);
+      padding: 4px 14px;
+      border-radius: 999px;
+    }
 
-  .tags {
-    font-size: 28px;
-    color: #000;
-    position: absolute;
-    bottom: 16px;
-    left: 20px;
-    max-width: 50%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0 10px;
-  }
-
-  .stamp {
-    position: absolute;
-    bottom: 16px;
-    right: 20px;
-    display: flex;
-    align-items: flex-end;
-  }
-
-  .stamp pre {
-    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
-    font-size: 7px;
-    line-height: 1;
-    color: #000;
-    margin: 0;
-  }
-
-  .stamp .tld {
-    font-size: 30px;
-    color: #000;
-    margin-left: 0;
-    line-height: 1;
-    align-self: flex-end;
-    margin-bottom: -3px;
-  }
-</style>
+    .site {
+      position: absolute;
+      top: 64px;
+      right: 64px;
+      font-size: 20px;
+      font-weight: 600;
+      color: #475569;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+  </style>
 </head>
 <body>
-
-<div class="og-image">
-  <canvas class="texture"></canvas>
-  <div class="card">
-    <div class="card-content">
-      <div class="date">{{ date }}</div>
-      <div class="title">{{ title }}</div>
-      <div class="tags">{% for tag in tags %}<span>#{{ tag }}</span> {% endfor %}</div>
+  {% if site.title != "" %}<span class="site">{{ site.title }}</span>{% endif %}
+  <span class="accent"></span>
+  <h1 class="title">{{ page.title | default: page.url }}</h1>
+  <div class="meta">
+    {% if page.date %}<span class="date">{{ page.date | date: "%B %-d, %Y" }}</span>{% endif %}
+    {% if page.tags.size > 0 %}
+    <div class="tags">
+      {% for tag in page.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
     </div>
-    <div class="stamp">
-      <pre> ░▒▓██████▓▒░ ░▒▓██████▓▒░▒▓████████▓▒░▒▓███████▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░
-░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░  ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░
-░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░  ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░
-░▒▓█▓▒░      ░▒▓████████▓▒░ ░▒▓█▓▒░   ░▒▓██████▓▒░░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░
-░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░         ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░
-░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░         ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░
- ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░  ░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░░▒▓████████▓▒░▒▓████████▓▒░</pre>
-      <span class="tld">.net</span>
-    </div>
+    {% endif %}
   </div>
-</div>
-
-<script>
-  const canvas = document.querySelector('.texture');
-  const ctx = canvas.getContext('2d');
-  const W = 1200, H = 630;
-  canvas.width = W;
-  canvas.height = H;
-
-  ctx.fillStyle = '#e8e4e0';
-  ctx.fillRect(0, 0, W, H);
-
-  ctx.fillStyle = '#000';
-  for (let i = 0; i < 15000; i++) {
-    const x = Math.random() * W;
-    const y = Math.random() * H;
-    const r = Math.random() < 0.9 ? Math.random() * 1.5 : Math.random() * 3;
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  // Fit title to available space
-  const title = document.querySelector('.title');
-  let size = 160;
-  title.style.fontSize = size + 'px';
-  while (size > 32 && title.scrollHeight > title.clientHeight) {
-    size -= 2;
-    title.style.fontSize = size + 'px';
-  }
-</script>
 </body>
 </html>
