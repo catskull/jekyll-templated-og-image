@@ -1,4 +1,4 @@
-# jekyll-og-image
+# jekyll-templated-og-image
 
 Jekyll plugin that automatically generates Open Graph images for your posts and pages using headless Chrome.
 
@@ -14,7 +14,7 @@ Add to your site's Gemfile. To run in development only:
 
 ```ruby
 group :development, :jekyll_plugins do
-  gem "jekyll-og-image"
+  gem "jekyll-templated-og-image"
 end
 ```
 
