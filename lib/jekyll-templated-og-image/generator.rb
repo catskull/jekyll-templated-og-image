@@ -15,9 +15,6 @@ module JekyllOgImage
       @output_dir = File.join(site.dest, @config.output_dir)
       @source_dir = File.join(site.source, @config.output_dir)
 
-      browser = Ferrum::Browser.new(headless: true, browser_options: { "font-render-hinting" => "none" })
-      browser.resize(width: 1200, height: 630)
-
       all_docs = site.posts.docs + site.pages + site.collections.values.flat_map(&:docs)
 
       documents = []
@@ -32,16 +29,24 @@ module JekyllOgImage
           documents += all_docs.select { |doc| File.fnmatch(glob, doc.url, File::FNM_PATHNAME) }
         end
       end
+
+      @browser = nil
       documents.uniq.reject { |doc| doc.url.end_with?(".xml", ".csv") }.each do |doc|
-        generate_image(browser, doc)
+        generate_image(doc)
       end
     ensure
-      browser&.quit
+      @browser&.quit
     end
 
     private
 
-    def generate_image(browser, doc)
+    def browser
+      @browser ||= Ferrum::Browser.new(headless: true, browser_options: { "font-render-hinting" => "none" }).tap do |b|
+        b.resize(width: 1200, height: 630)
+      end
+    end
+
+    def generate_image(doc)
       slug = slug_for(doc)
       output_path = File.join(@output_dir, "#{slug}.png")
       source_path = File.join(@source_dir, "#{slug}.png")
